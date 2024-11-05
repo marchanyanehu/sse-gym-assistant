@@ -18,7 +18,7 @@ Gym Assistant is an AI-powered web application designed to offer personalized fi
 - **Backend**: [FastAPI](https://fastapi.tiangolo.com/) - a modern web framework for building APIs with Python.
 - **Frontend**: [React.js](https://reactjs.org/) - a JavaScript library for creating user interfaces.
 - **Database**: [PostgreSQL](https://www.postgresql.org/) - for reliable, robust data storage.
-- **AI and Data Processing**: Integration with [MyFitnessPal](https://www.myfitnesspal.com/) API, USDA nutrition data, and custom AI models.
+- **AI and Data Processing**: Integration with [MyFitnessPal](https://www.myfitnesspal.com/) API, USDA nutrition data, and "custom" AI models.
 - **Health & Fitness Data Integration**: API support for wearables like Fitbit, Garmin, and Apple Health.
 - **CI/CD**: Continuous integration and deployment using GitHub Actions.
 - **Containerization**: [Docker](https://www.docker.com/) for consistent environment and deployment.
