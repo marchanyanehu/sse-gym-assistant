@@ -1,17 +1,19 @@
 from fastapi import FastAPI
-from backend.app.routers import user
+from backend.app.routers import auth_route, user_route
 from backend.app.utils.database import engine
-from .models.base import Base
+from .models.base_model import Base
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-app.include_router(user.router)
+app.include_router(user_route.router)
+app.include_router(auth_route.router)
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to Gym Assistant API"}
+    return RedirectResponse(url="/docs")
 
 
 if __name__ == "__main__":

@@ -6,8 +6,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from models.base import Base
-from models.user import User
+from backend.app.models.base_model import Base
+from backend.app.models.user_model import User
 
 
 
