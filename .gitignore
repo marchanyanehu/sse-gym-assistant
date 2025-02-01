@@ -400,3 +400,4 @@ FodyWeavers.xsd
 
 # Etc
 .env
+*.db
