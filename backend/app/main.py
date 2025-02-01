@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.app.routers import auth_route, user_route
+from backend.app.routers import auth_route, user_route, calibration_route, profile_route
 from backend.app.utils.database import engine
 from .models.base_model import Base
 from fastapi.responses import RedirectResponse
@@ -10,6 +10,8 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(user_route.router)
 app.include_router(auth_route.router)
+app.include_router(profile_route.router)
+app.include_router(calibration_route.router)
 
 @app.get("/")
 def read_root():
