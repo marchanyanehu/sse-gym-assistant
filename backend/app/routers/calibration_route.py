@@ -1,7 +1,8 @@
+# language: python
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from backend.app.schemas import calibration_schema
-from backend.app.models import calibration_model, exercise_result_model
+from backend.app.models import calibration_model, exercise_result_model, exercise_model
 from backend.app.models import profile_model 
 from backend.app.utils.database import get_db
 from backend.app.routers.auth_route import get_current_user
@@ -25,12 +26,16 @@ def calibrate(
     if not calibration_request.exercises:
         raise HTTPException(status_code=400, detail="No exercise results provided.")
 
-    # Compute average score from exercises
+    # Validate that each exercise exists in the DB
+    valid_exercise_names = {e.name for e in db.query(exercise_model.Exercise).all()}
+    for name in calibration_request.exercises.keys():
+        if name not in valid_exercise_names:
+            raise HTTPException(status_code=400, detail=f"Invalid exercise: {name}")
+    
+    # Compute calibration score (as before)
     avg_score = sum(calibration_request.exercises.values()) / len(calibration_request.exercises)
     ratio = profile.weight / profile.height
     gender_adjustment = 1.1 if profile.sex.lower() == "male" else 0.9
-
-    # Calibration algorithm that incorporates profile values
     calibration_score = avg_score + (ratio * gender_adjustment) - (profile.body_fat_percentage * 0.1)
     
     # Save calibration record with profile data
@@ -47,10 +52,10 @@ def calibrate(
     db.refresh(calibration_obj)
     
     # Save individual exercise results
-    for exercise, score in calibration_request.exercises.items():
+    for exercise_name, score in calibration_request.exercises.items():
         exercise_obj = exercise_result_model.ExerciseResult(
             calibration_id=calibration_obj.id,
-            exercise=exercise,
+            exercise=exercise_name,
             score=score
         )
         db.add(exercise_obj)
